@@ -77,6 +77,7 @@ namespace PdfFlow.Controllers
         {
             DocumentBuilder builder = DocumentBuilder.New();
             
+            // Set page style
             var sectionBuilder =
                 builder
                     .AddSection()
@@ -86,6 +87,7 @@ namespace PdfFlow.Controllers
                     .SetOrientation(PageOrientation.Portrait)
                     .SetNumerationStyle(NumerationStyle.Arabic);
 
+            // Set address style to the top right of the page
             sectionBuilder
                 .AddParagraph()
                 .AddTabSymbol()
@@ -102,6 +104,7 @@ namespace PdfFlow.Controllers
                 .AddTextToParagraph(pdf.Postcode)
                 .SetAlignment(HorizontalAlignment.Right);
             
+            // Add 'Account Holder' with name below it
             sectionBuilder
                 .AddParagraph()
                 .SetMarginTop(15)
@@ -114,7 +117,8 @@ namespace PdfFlow.Controllers
                 .AddTabSymbol()
                 .AddTextToParagraph(pdf.Name)
                 .SetAlignment(HorizontalAlignment.Left);
-                
+            
+            // Set main body of text
             sectionBuilder
                 .AddParagraph(pdf.TextInput)
                 .SetMarginTop(15)
@@ -122,6 +126,7 @@ namespace PdfFlow.Controllers
                 .SetAlignment(HorizontalAlignment.Left)
                 .SetOutline();
             
+            // Build the pdf and save to local machine
             builder.Build($"{filePath}.pdf");
         }
     }
