@@ -1,0 +1,23 @@
+﻿@model PdfFlow.ViewModels.DetailsFormViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Create PDF</h1>
+@using (Html.BeginForm("Details", "PDF"))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(m => m.TextInput)
+        @Html.TextAreaFor(m => m.TextInput, new { @class = "form-control", autofocus = "autofocus" })
+        @Html.ValidationMessageFor(m => m.TextInput)
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-primary">Save</button>
+}
+@section scripts
+{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+}
+    
+
