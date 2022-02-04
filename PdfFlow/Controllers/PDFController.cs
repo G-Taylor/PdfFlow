@@ -57,6 +57,10 @@ namespace PdfFlow.Controllers
             var fileNameExtension = Guid.NewGuid();
             var pdf = new PdfModel
             {
+                Name = viewModel.Name,
+                AddressLine1 = viewModel.AddressLine1,
+                AddressLine2 = viewModel.AddressLine2,
+                Postcode = viewModel.Postcode,
                 TextInput = viewModel.TextInput,
                 FilePath = $"{FilePath}{fileNameExtension}.pdf",
             };
@@ -65,11 +69,11 @@ namespace PdfFlow.Controllers
             _dbContext.SaveChanges();
 
             var fullFileName = $"{FilePath}{fileNameExtension}";
-            GeneratePDF(viewModel.TextInput, fullFileName);
+            GeneratePDF(viewModel.TextInput, fullFileName, pdf);
             return RedirectToAction("Details", "PDF");
         }
 
-        private void GeneratePDF(string textInput, string filePath)
+        private void GeneratePDF(string textInput, string filePath, PdfModel pdf)
         {
             DocumentBuilder builder = DocumentBuilder.New();
             
@@ -77,16 +81,45 @@ namespace PdfFlow.Controllers
                 builder
                     .AddSection()
                     // Customize settings:
-                    .SetMargins(horizontal: 30, vertical: 10)
+                    .SetMargins(horizontal: 50, vertical: 50)
                     .SetSize(PaperSize.A4)
                     .SetOrientation(PageOrientation.Portrait)
                     .SetNumerationStyle(NumerationStyle.Arabic);
+
+            sectionBuilder
+                .AddParagraph()
+                .AddTabSymbol()
+                .AddTextToParagraph(pdf.AddressLine1)
+                .SetAlignment(HorizontalAlignment.Right)
+                .ToSection()
+                .AddParagraph()
+                .AddTabSymbol()
+                .AddTextToParagraph(pdf.AddressLine2)
+                .SetAlignment(HorizontalAlignment.Right)
+                .ToSection()
+                .AddParagraph()
+                .AddTabSymbol()
+                .AddTextToParagraph(pdf.Postcode)
+                .SetAlignment(HorizontalAlignment.Right);
             
             sectionBuilder
-                .AddParagraph(textInput)
+                .AddParagraph()
+                .SetMarginTop(15)
+                .AddTextToParagraph("Account Holder")
+                .SetFontColor(Color.Black)
+                .SetBold()
+                .SetAlignment(HorizontalAlignment.Left)
+                .ToSection()
+                .AddParagraph()
+                .AddTabSymbol()
+                .AddTextToParagraph(pdf.Name)
+                .SetAlignment(HorizontalAlignment.Left);
+                
+            sectionBuilder
+                .AddParagraph(pdf.TextInput)
                 .SetMarginTop(15)
                 .SetFontColor(Color.Gray)
-                .SetAlignment(HorizontalAlignment.Center)
+                .SetAlignment(HorizontalAlignment.Left)
                 .SetOutline();
             
             builder.Build($"{filePath}.pdf");

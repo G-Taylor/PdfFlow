@@ -4,9 +4,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace PdfFlow.Data.Migrations
+namespace PdfFlow.Migrations
 {
-    public partial class PDFModel : Migration
+    public partial class PDFModelUpdatedFieldsWithAnnotations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,8 +55,12 @@ namespace PdfFlow.Data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     TextInput = table.Column<string>(type: "text", nullable: false),
-                    FilePath = table.Column<string>(type: "text", nullable: false)
+                    FilePath = table.Column<string>(type: "text", nullable: false),
+                    AddressLine1 = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    AddressLine2 = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Postcode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
