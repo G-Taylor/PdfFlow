@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Gehtsoft.PDFFlow.Builder;
 using Gehtsoft.PDFFlow.Models.Enumerations;
 using Gehtsoft.PDFFlow.Models.Shared;
+using Gehtsoft.PDFFlow.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PdfFlow.Data;
@@ -84,6 +85,7 @@ namespace PdfFlow.Controllers
                     // Customize settings:
                     .SetMargins(horizontal: 50, vertical: 50)
                     .SetSize(PaperSize.A4)
+                    .SetStyleFont(Fonts.Courier(12))
                     .SetOrientation(PageOrientation.Portrait)
                     .SetNumerationStyle(NumerationStyle.Arabic);
 
