@@ -127,7 +127,8 @@ namespace PdfFlow.Controllers
                 .SetFontColor(Color.Gray)
                 .SetAlignment(HorizontalAlignment.Left)
                 .SetOutline();
-            
+
+            sectionBuilder.AddFooterToBothPages(Single.Epsilon);
             // Build the pdf and save to local machine
             builder.Build($"{filePath}.pdf");
         }
