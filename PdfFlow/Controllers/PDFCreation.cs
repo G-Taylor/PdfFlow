@@ -45,7 +45,8 @@ public class PDFCreation
                     .SetOrientation(PageOrientation.Portrait)
                     .SetNumerationStyle(NumerationStyle.Arabic);
 
-            
+            // Get the logo for the head of the page, based on user selection
+            // Defaults to the PwC Logo
             string image = GetLogo(pdf.Logo);
             sectionBuilder
                 .AddImage(image)
@@ -91,6 +92,7 @@ public class PDFCreation
                 .SetAlignment(HorizontalAlignment.Left)
                 .SetOutline();
             
+            // Footer code
             RepeatingAreaBuilder footer = sectionBuilder.AddFooterToBothPages(40f);
             footer
                 .AddParagraph()
