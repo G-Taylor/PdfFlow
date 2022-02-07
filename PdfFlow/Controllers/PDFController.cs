@@ -6,6 +6,7 @@ using Gehtsoft.PDFFlow.Models.Shared;
 using Gehtsoft.PDFFlow.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders.Physical;
 using PdfFlow.Data;
 using PdfFlow.Models;
 using PdfFlow.ViewModels;
@@ -27,7 +28,11 @@ namespace PdfFlow.Controllers
         [HttpGet]
         public IActionResult Details()
         {
-            return View();
+            var viewModel = new DetailsFormViewModel()
+            {
+                Logos = _dbContext.LogoModels.ToList()
+            };
+            return View(viewModel);
         }
         
         [HttpGet("/api/{id}")]
@@ -64,6 +69,7 @@ namespace PdfFlow.Controllers
                 Postcode = viewModel.Postcode,
                 TextInput = viewModel.TextInput,
                 FilePath = $"{FilePath}{fileNameExtension}.pdf",
+                Logo = viewModel.Logo
             };
             
             _dbContext.PdfModels.Add(pdf);
@@ -74,6 +80,30 @@ namespace PdfFlow.Controllers
             return RedirectToAction("Details", "PDF");
         }
 
+        private string GetLogo(string logoSelection)
+        {
+            string logoFilePath = "/Users/gtaylor038/Documents/Logos/";
+            string image = "";
+
+            switch (logoSelection)
+            {
+                case "1":
+                    image = "PwC.jpeg";
+                    break;
+                case "2":
+                    image = "Lloyds.png";
+                    break;
+                case "3":
+                    image = "Santander.png";
+                    break;
+                default:
+                    image = "PwC.jpeg";
+                    break;
+            }
+
+            return $"{logoFilePath}{image}";
+        }
+        
         private void GeneratePDF(string textInput, string filePath, PdfModel pdf)
         {
             DocumentBuilder builder = DocumentBuilder.New();
@@ -85,9 +115,15 @@ namespace PdfFlow.Controllers
                     // Customize settings:
                     .SetMargins(horizontal: 50, vertical: 50)
                     .SetSize(PaperSize.A4)
-                    .SetStyleFont(Fonts.Courier(12))
                     .SetOrientation(PageOrientation.Portrait)
                     .SetNumerationStyle(NumerationStyle.Arabic);
+
+            
+            string image = GetLogo(pdf.Logo);
+            sectionBuilder
+                .AddImage(image)
+                .SetScale(ScalingMode.None)
+                .SetWidth(150);
 
             // Set address style to the top right of the page
             sectionBuilder
@@ -127,8 +163,13 @@ namespace PdfFlow.Controllers
                 .SetFontColor(Color.Gray)
                 .SetAlignment(HorizontalAlignment.Left)
                 .SetOutline();
-
-            sectionBuilder.AddFooterToBothPages(Single.Epsilon);
+            
+            RepeatingAreaBuilder footer = sectionBuilder.AddFooterToBothPages(40f);
+            footer
+                .AddParagraph()
+                .SetAlignment(HorizontalAlignment.Right)
+                .AddPageNumber(customText: "Page ");
+            
             // Build the pdf and save to local machine
             builder.Build($"{filePath}.pdf");
         }

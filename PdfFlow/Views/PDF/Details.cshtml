@@ -8,23 +8,28 @@
 {
     @Html.AntiForgeryToken()
     <div class="form-group">
+        @Html.LabelFor(m => m.Logo)
+        @Html.DropDownListFor(m => m.Logo, new SelectList(Model.Logos, "Id", "Name"), "", new { @class = "form-control", autofocus = "autofocus" })
+        @Html.ValidationMessageFor(m => m.Logo)
+    </div>
+    <div class="form-group">
         @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", autofocus = "autofocus" })
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.Name)
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.AddressLine1)
-        @Html.TextBoxFor(m => m.AddressLine1, new { @class = "form-control", autofocus = "autofocus" })
+        @Html.TextBoxFor(m => m.AddressLine1, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.AddressLine1)
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.AddressLine2)
-        @Html.TextBoxFor(m => m.AddressLine2, new { @class = "form-control", autofocus = "autofocus" })
+        @Html.TextBoxFor(m => m.AddressLine2, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.AddressLine2)
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Postcode)
-        @Html.TextBoxFor(m => m.Postcode, new { @class = "form-control", autofocus = "autofocus" })
+        @Html.TextBoxFor(m => m.Postcode, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.Postcode)
     </div>
     <div class="form-group">

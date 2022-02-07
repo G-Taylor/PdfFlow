@@ -25,4 +25,6 @@ public class PdfModel
     [Required]
     [StringLength(10)]
     public string Postcode { get; set; }
+
+    public string Logo { get; set; }
 }

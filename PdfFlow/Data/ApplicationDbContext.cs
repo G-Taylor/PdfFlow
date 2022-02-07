@@ -11,4 +11,5 @@ public class ApplicationDbContext : IdentityDbContext
     {
     }
     public DbSet<PdfModel> PdfModels { get; set; }
+    public DbSet<LogoModel> LogoModels { get; set; }
 }
