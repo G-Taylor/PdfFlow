@@ -16,3 +16,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.form-group {
+  width: 30%;
+}
+
+#bigText {
+  width: 80%;
+}
