@@ -10,6 +10,9 @@
 
     <ItemGroup>
         <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+        <None Include="wwwroot\images\logos\Lloyds.png" />
+        <None Include="wwwroot\images\logos\PwC.jpeg" />
+        <None Include="wwwroot\images\logos\Santander.png" />
     </ItemGroup>
 
     <ItemGroup>
@@ -26,7 +29,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Data\Images\Logos" />
       <Folder Include="Data\Migrations" />
     </ItemGroup>
 

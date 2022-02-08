@@ -1,34 +1,33 @@
 using Gehtsoft.PDFFlow.Builder;
 using Gehtsoft.PDFFlow.Models.Enumerations;
 using Gehtsoft.PDFFlow.Models.Shared;
+using Microsoft.AspNetCore.Mvc;
 using PdfFlow.Models;
 
 namespace PdfFlow.Controllers;
 
-public class PDFCreation
+public static class PDFCreation
 {
     private static string GetLogo(string logoSelection)
     {
-        string logoFilePath = "PdfFlow/Data/Images/Logos/";
-        string image = "";
+        var image = "";
 
         switch (logoSelection)
         {
             case "1":
-                image = "PwC.jpeg";
+                image = "./wwwroot/images/logos/PwC.jpeg";
                 break;
             case "2":
-                image = "Lloyds.png";
+                image = "./wwwroot/images/logos/Lloyds.png";
                 break;
             case "3":
-                image = "Santander.png";
+                image = "./wwwroot/images/logos/Santander.png";
                 break;
             default:
-                image = "PwC.jpeg";
+                image = "./wwwroot/images/logos/PwC.jpeg";
                 break;
         }
-
-        return $"{logoFilePath}{image}";
+        return image;
     }
 
     public static void GeneratePdf(string textInput, string filePath, PdfModel pdf)
@@ -47,7 +46,7 @@ public class PDFCreation
 
             // Get the logo for the head of the page, based on user selection
             // Defaults to the PwC Logo
-            string image = GetLogo(pdf.Logo);
+            var image = GetLogo(pdf.Logo);
             sectionBuilder
                 .AddImage(image)
                 .SetScale(ScalingMode.None)
