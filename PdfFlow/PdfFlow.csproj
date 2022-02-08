@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Data\Images\Logos" />
       <Folder Include="Data\Migrations" />
     </ItemGroup>
 

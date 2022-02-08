@@ -9,7 +9,7 @@ public class PDFCreation
 {
     private static string GetLogo(string logoSelection)
     {
-        string logoFilePath = "/Users/gtaylor038/Documents/Logos/";
+        string logoFilePath = "PdfFlow/Data/Images/Logos/";
         string image = "";
 
         switch (logoSelection)
