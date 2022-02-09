@@ -19,7 +19,8 @@ namespace PdfFlow.Controllers
     {
 
         private ApplicationDbContext _dbContext;
-        private static readonly string FilePath = "/Users/gtaylor038/Downloads/";
+        private static readonly string FilePath = "./GeneratedPDFs/";
+        // private static readonly string FilePath = "/Users/gtaylor038/Downloads/";
         
         public PDFController(ApplicationDbContext dbContext)
         {

@@ -1,0 +1,51 @@
+version: '3.8'
+
+#networks:
+#  pdfflow-dev:
+#    driver: bridge
+    
+services:
+  web:
+    image: pdflow:latest
+    depends_on:
+      - "db"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    environment:
+      DB_CONNECTION_STRING: "Host=db;Port=5432;Username=pdfuser;Password=pdfuser;Database=pdfdb;"
+#    networks:
+#      - pdfflow-dev
+    
+#  db:
+#    image: postgres:latest
+#    ports:
+#      - "5432"
+#    restart: always
+#    environment:
+#      POSTGRES_USER: "pdfuser"
+#      POSTGRES_PASSWORD: "pdfuser"
+#      POSTGRES_DB: "pdfdb"
+#    volumes:
+#      - db_volume:/var/lib/postgresql/data
+#      - ./dbscripts/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+#    networks:
+#      - pdfflow-dev
+  
+  db:
+    env_file:
+      - .env
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=${DBNAME}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./dbscripts/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+volumes:
+  postgres_data:
