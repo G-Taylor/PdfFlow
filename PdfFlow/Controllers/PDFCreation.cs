@@ -6,8 +6,16 @@ using PdfFlow.Models;
 
 namespace PdfFlow.Controllers;
 
+/*
+ * PDFCreation.cs handles all of the formatting, layout, logo selection and pdf creation methods
+ */
 public static class PDFCreation
 {
+    /*
+     * GetLogo takes the value from the Logo dropdown menu on the front end and gets the corresponding image
+     * from the wwwroot/images/logo/ folder.
+     * The numbers correspond to the Id of each logo type, stored in the LogoModels table
+     */
     private static string GetLogo(string logoSelection)
     {
         var image = "";
@@ -30,7 +38,12 @@ public static class PDFCreation
         return image;
     }
 
-    public static void GeneratePdf(string textInput, string filePath, PdfModel pdf)
+    /*
+     * GeneratePdf takes a PdfModel object, that is stored in the DB, and extracts the values for the relevant
+     * areas into the appropriate PDF sections.
+     * The PDF is then generated and saved to the defined filePath
+     */
+    public static void GeneratePdf(PdfModel pdf)
         {
             DocumentBuilder builder = DocumentBuilder.New();
             
@@ -99,6 +112,6 @@ public static class PDFCreation
                 .AddPageNumber(customText: "Page ");
             
             // Build the pdf and save to local machine
-            builder.Build($"{filePath}.pdf");
+            builder.Build($"{pdf.FilePath}");
         }
 }

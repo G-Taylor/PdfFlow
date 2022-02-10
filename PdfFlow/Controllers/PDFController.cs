@@ -19,7 +19,6 @@ namespace PdfFlow.Controllers
     {
 
         private ApplicationDbContext _dbContext;
-        private static readonly string FilePath = "./GeneratedPDFs/";
         // private static readonly string FilePath = "/Users/gtaylor038/Downloads/";
         
         public PDFController(ApplicationDbContext dbContext)
@@ -47,9 +46,9 @@ namespace PdfFlow.Controllers
             }
             else
             {
-                var fileExtension = pdf.FilePath;
+                var fileLocation = pdf.FilePath;
                 var memory = new MemoryStream();
-                using (var stream = new FileStream($"{fileExtension}", FileMode.Open))
+                using (var stream = new FileStream($"{fileLocation}", FileMode.Open))
                 {
                     await stream.CopyToAsync(memory);
                 }
@@ -62,7 +61,7 @@ namespace PdfFlow.Controllers
         [HttpPost]
         public ActionResult Details(DetailsFormViewModel viewModel)
         {
-            var fileNameExtension = Guid.NewGuid();
+            var uniqueId = Guid.NewGuid();
             var pdf = new PdfModel
             {
                 Name = viewModel.Name,
@@ -70,15 +69,16 @@ namespace PdfFlow.Controllers
                 AddressLine2 = viewModel.AddressLine2,
                 Postcode = viewModel.Postcode,
                 TextInput = viewModel.TextInput,
-                FilePath = $"{FilePath}{fileNameExtension}.pdf",
+                // FilePath = $"{FilePath}{fileNameExtension}.pdf",
+                FilePath = $"{uniqueId}.pdf",
                 Logo = viewModel.Logo
             };
             
             _dbContext.PdfModels.Add(pdf);
             _dbContext.SaveChanges();
-
-            var fullFileName = $"{FilePath}{fileNameExtension}";
-            GeneratePdf(viewModel.TextInput, fullFileName, pdf);
+            
+            // var fullFileName = $"{FilePath}{fileNameExtension}";
+            GeneratePdf(pdf);
             return RedirectToAction("Details", "PDF");
         }
     }
