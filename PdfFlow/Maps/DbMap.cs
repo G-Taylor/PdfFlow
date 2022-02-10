@@ -4,6 +4,10 @@ using PdfFlow.Models;
 
 namespace PdfFlow.Maps;
 
+/*
+ * DB table and column names are stored in lowercase with Postgres, so this mapping class
+ * is required to link each table and column with its C# camelcase equivalent
+ */
 public class DbMap
 {
     public DbMap(EntityTypeBuilder<LogoModel> entityTypeBuilder)

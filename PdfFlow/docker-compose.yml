@@ -2,6 +2,8 @@ version: '3.8'
     
 services:
   web:
+    env_file:
+      - .env
     image: pdflow:latest
     depends_on:
       - "db"
@@ -11,7 +13,7 @@ services:
     ports:
       - "8000:80"
     environment:
-      DB_CONNECTION_STRING: "Host=db;Port=5432;Username=pdfuser;Password=pdfuser;Database=pdfdb;"
+      DB_CONNECTION_STRING: Host=db;Port=5432;Username=${DBUSER};Password=${DBPASS};Database=${DBNAME};
   
   db:
     env_file:

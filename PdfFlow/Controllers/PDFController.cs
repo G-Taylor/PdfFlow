@@ -19,13 +19,16 @@ namespace PdfFlow.Controllers
     {
 
         private ApplicationDbContext _dbContext;
-        // private static readonly string FilePath = "/Users/gtaylor038/Downloads/";
-        
+
         public PDFController(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
         
+        /*
+         * Loads the Enter Details page, and populates the Logo
+         * dropdown with data from the LogoModels table
+         */
         [HttpGet]
         public IActionResult Details()
         {
@@ -36,6 +39,11 @@ namespace PdfFlow.Controllers
             return View(viewModel);
         }
         
+        /*
+         * Get Request for the API, that takes an integer Id value.
+         * The database is queried for an entry with that Id, and if one is found then the associated PDF
+         * is returned and opened in the browser
+         */
         [HttpGet("/api/{id}")]
         public async Task<IActionResult> Details(int id)
         {
@@ -58,6 +66,10 @@ namespace PdfFlow.Controllers
             }
         }
         
+        /*
+         * Post Request for application via the Enter Details page.
+         * Takes data from input fields, saves it to the DB, and then generates a PDF
+         */
         [HttpPost]
         public ActionResult Details(DetailsFormViewModel viewModel)
         {
@@ -69,7 +81,6 @@ namespace PdfFlow.Controllers
                 AddressLine2 = viewModel.AddressLine2,
                 Postcode = viewModel.Postcode,
                 TextInput = viewModel.TextInput,
-                // FilePath = $"{FilePath}{fileNameExtension}.pdf",
                 FilePath = $"{uniqueId}.pdf",
                 Logo = viewModel.Logo
             };
@@ -77,7 +88,6 @@ namespace PdfFlow.Controllers
             _dbContext.PdfModels.Add(pdf);
             _dbContext.SaveChanges();
             
-            // var fullFileName = $"{FilePath}{fileNameExtension}";
             GeneratePdf(pdf);
             return RedirectToAction("Details", "PDF");
         }
