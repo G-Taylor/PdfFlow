@@ -44,7 +44,7 @@ namespace PdfFlow.Controllers
          * The database is queried for an entry with that Id, and if one is found then the associated PDF
          * is returned and opened in the browser
          */
-        [HttpGet("/api/{id}")]
+        [HttpGet("/api/pdf/{id}")]
         public async Task<IActionResult> Details(int id)
         {
             var pdf = _dbContext.PdfModels.Find(id);
@@ -90,6 +90,49 @@ namespace PdfFlow.Controllers
             
             GeneratePdf(pdf);
             return RedirectToAction("Details", "PDF");
+        }
+        
+        // POST request that creates a PDF using JSON data, and saves data to the DB
+        // http://localhost:8000/api/
+        [HttpPost("api/")]
+        public IActionResult Post([FromBody] PdfModel model)
+        {
+            var uniqueId = Guid.NewGuid();
+            model.FilePath = $"{uniqueId}.pdf";
+            
+            _dbContext.PdfModels.Add(model);
+            _dbContext.SaveChanges();
+            
+            GeneratePdf(model);
+            return Ok("New Entry Added!");
+        }
+        
+        // GET request that returns details of one saved PDF based on an Id
+        // http://localhost:8000/api/{id}
+        [HttpGet("api/{id}")]
+        public IActionResult Get(int id)
+        {
+            var dbEntry = _dbContext.PdfModels.Find(id);
+
+            if(dbEntry == null)
+            {
+                return NotFound("No entry found for this id...");
+            }
+            else
+            {
+                return Ok(dbEntry);
+            }
+        }
+        
+        // GET request that returns details of all saved PDF's
+        // http://localhost:8000/api/
+        [HttpGet("api/")]
+        public IActionResult Get()
+        {
+            IQueryable<PdfModel> pdfs;
+            
+            pdfs = _dbContext.PdfModels;
+            return Ok(pdfs);
         }
     }
 }
